@@ -31,8 +31,7 @@ public class MouseClick {
 	 * @param args
 	 * @throws AWTException
 	 */
-	public static void main(String[] args) throws AWTException {
-		// TODO Auto-generated method stub
+	public static void InitialMouseCLickMain() throws AWTException {
 		System.out.println("enter: xPos, enter, yPos, enter, click?");
 		int x = sc.nextInt();
 		int y = sc.nextInt();

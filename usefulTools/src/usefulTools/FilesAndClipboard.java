@@ -37,14 +37,13 @@ public class FilesAndClipboard {
 	 * @param args
 	 */
 
-	public static void main(String[] args) throws AWTException {
+	public static void InitialFilesAndClipboardMain() throws AWTException {
 		System.out.println("enter: FileName, enter");
 		FilesAndClipboard.FileName = sc.nextLine();
 		FilesAndClipboard.ClassFile = CreateFile(FilesAndClipboard.FileName);
 
-		// WriteToFile(TestingWriteToFileMethod(), FilesAndClipboard.ClassFile,
-		// FilesAndClipboard.LinesOfFile);
-
+		WriteToFile(TestingWriteToFileMethod(), FilesAndClipboard.ClassFile, FilesAndClipboard.LinesOfFile, null);
+		// testing ^^ using ArrayList to write to file
 		GetFilePath(FilesAndClipboard.ClassFile);
 		OpenFile(FilesAndClipboard.ClassFile);
 		DeleteFile(FilesAndClipboard.ClassFile);
