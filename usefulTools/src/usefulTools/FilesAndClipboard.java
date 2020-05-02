@@ -36,7 +36,7 @@ public class FilesAndClipboard {
 	/**
 	 * @param args
 	 */
-
+	//test
 	public static void InitialFilesAndClipboardMain() throws AWTException {
 		System.out.println("enter: FileName, enter");
 		FilesAndClipboard.FileName = sc.nextLine();
