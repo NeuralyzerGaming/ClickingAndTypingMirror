@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.ArrayList;
-//import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -34,10 +33,6 @@ public class GettingMouseLocationFile implements KeyListener {
 				if (ak.equals(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK))) {
 					System.out.println(GettingMouseLocationFile.MouseSequenceArray);
 					// to see what order of clicks was pressed and what was written to the fill
-					//FilesAndClipboard.AltTab(true);
-					//resetCursur();
-					/*FilesAndClipboard.WriteToFile(GettingMouseLocationFile.MouseSequenceArray.size(),
-							GettingMouseLocationFile.MouseSequenceFile);*/
 					System.out.println("the array is this long: "+ GettingMouseLocationFile.MouseSequenceArray.size());
 					GettingMouseLocationFile.MouseSequenceArray.add(0,GettingMouseLocationFile.MouseSequenceArray.size());
 					FilesAndClipboard.WriteToFile(GettingMouseLocationFile.MouseSequenceArray,
@@ -45,11 +40,9 @@ public class GettingMouseLocationFile implements KeyListener {
 							GettingMouseLocationFile.MouseSequenceArray.size());
 					try {
 						FilesAndClipboard.OpenFile(GettingMouseLocationFile.MouseSequenceFile);
-						//FilesAndClipboard.AltTab(true);
 					} catch (AWTException e1) {
 						e1.printStackTrace();
 					}
-					//resetCursur();
 					FilesAndClipboard.GetFilePath(GettingMouseLocationFile.MouseSequenceFile);
 					FilesAndClipboard.DeleteFile(GettingMouseLocationFile.MouseSequenceFile);
 					System.out.println("MouseSequence Program has written resources to file and is now ended");
@@ -63,8 +56,10 @@ public class GettingMouseLocationFile implements KeyListener {
 					GettingMouseLocationFile.NumbOfClicks++;
 					System.out.println("The " + GettingMouseLocationFile.NumbOfClicks + "th possition is: " + MouseX + " is the x pos. and " + MouseY
 							+ " is the y pos.");
+				} else if (e.getKeyCode() == 27) {
+					System.exit(0);
 				}
-				// System.out.println(e.getKeyCode());
+				//System.out.println(e.getKeyCode());
 				// to figure out what code I typed
 				e.consume();
 				// gets rid of weird shit i think - I don't know how important
@@ -85,13 +80,5 @@ public class GettingMouseLocationFile implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		e.consume();
-	}
-
-	public static void resetCursur() {
-		try {
-			MouseClick.click(462, 337, true, false, 200);
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -3,21 +3,21 @@
  */
 package usefulTools;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.awt.*;
-import java.awt.List;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.nio.file.*;
 import java.io.*;
-import java.util.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.io.*;
+//import java.util.*;
+//import java.nio.charset.StandardCharsets;
+//import java.nio.file.*;
+//import java.io.*;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
+//import java.nio.charset.StandardCharsets;
+//import java.nio.file.*;
+//import java.awt.List;
 
 /**
  * @author warre
@@ -36,7 +36,16 @@ public class FilesAndClipboard {
 	/**
 	 * @param args
 	 */
-	//test
+	// test
+	public static void main(String[] args) {
+		try {
+			OpenFile("test");
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void InitialFilesAndClipboardMain() throws AWTException {
 		System.out.println("enter: FileName, enter");
 		FilesAndClipboard.FileName = sc.nextLine();
@@ -176,6 +185,21 @@ public class FilesAndClipboard {
 		return s;
 	}
 
+	public static String GetFilePath(File File, Boolean CopyYesOrNo) {
+		String s = null;
+		try {
+			String FilePath = File.getAbsolutePath();
+			s = FilePath;
+			System.out.println("Original  path: " + File.getPath());
+			System.out.println("Absolute  path: " + FilePath);
+			CopyToClipBoard(FilePath, CopyYesOrNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("GetFilePath method ended");
+		return s;
+	}
+
 	public static void OpenFile(File File) throws AWTException {
 		try {
 			System.out.println("open file? Enter y/n");
@@ -192,6 +216,22 @@ public class FilesAndClipboard {
 				System.out.println("Error, \"y\" or \"n\" not pressed");
 				System.out.println("OpenFile method ended");
 			}
+		} catch (Exception e) {
+			System.out.println("Error in OpenFile(); Method");
+			e.printStackTrace();
+		}
+		System.out.println("OpenFile method ended");
+	}
+
+	public static void OpenFile(File File, Boolean OpenFileYesOrNo) throws AWTException {
+		try {
+			if (Objects.equals(OpenFileYesOrNo, true)) {
+				Desktop desktop = Desktop.getDesktop();
+				desktop.open(File);
+				// System.out.println("OpenFile method ended");
+			} /*
+				 * else if (Objects.equals(OpenFileYesOrNo, false)) { }
+				 */
 		} catch (Exception e) {
 			System.out.println("Error in OpenFile(); Method");
 			e.printStackTrace();
@@ -231,6 +271,21 @@ public class FilesAndClipboard {
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clipboard.setContents(s, s);
 		} else if (Objects.equals(yesorno, "n")) {
+		} else {
+			System.out.println("error");
+		}
+		System.out.println("CopyToClipBoard method ended");
+	}
+
+	public static void CopyToClipBoard(String ThingToCopy, Boolean yesorno) {
+		if (Objects.equals(yesorno, true)) {
+			StringSelection s = new StringSelection(ThingToCopy);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(s, s);
+			System.out.println("\"" + ThingToCopy + "\" coppied to clipboard");
+
+		} else if (Objects.equals(yesorno, false)) {
+			System.out.println("\"" + ThingToCopy + "\" not coppied to clipboard");
 		} else {
 			System.out.println("error");
 		}
@@ -298,6 +353,15 @@ public class FilesAndClipboard {
 			System.out.println("file deleted, DeleteFile method ended");
 		} else {
 			System.out.println("Y not entered, DeleteFile method ended");
+		}
+	}
+
+	public static void DeleteFile(File File, Boolean DeleteFileTrue) {
+		if (Objects.equals(DeleteFileTrue, true)) {
+			File.delete();
+			System.out.println("file deleted, DeleteFile method ended");
+		} else {
+			System.out.println("DeleteFile method ended");
 		}
 	}
 
