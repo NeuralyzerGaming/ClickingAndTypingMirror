@@ -22,7 +22,7 @@ public class GettingMouseLocationFile implements KeyListener {
 	public static ArrayList<Integer> MouseSequenceArray = new ArrayList<Integer>();
 	public static File MouseSequenceFile = FilesAndClipboard.CreateFile("MouseSequence");
 
-	public static void main(String args[]) throws AWTException {
+	public static void main() throws AWTException {
 		Frame f = new Frame();
 		f.setSize(500, 500);
 		f.setVisible(true);

@@ -15,25 +15,47 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.mouse.NativeMouseEvent;
+import org.jnativehook.mouse.NativeMouseInputListener;
+import org.jnativehook.mouse.NativeMouseListener;
+import org.jnativehook.mouse.NativeMouseMotionListener;
 
 /**
  * @author warre
  *
  */
 
-public class KeyBoardInput implements NativeKeyListener {
+public class Listener implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener {
 
-	public static File KeyboardSequenceFile = FilesAndClipboard.CreateFile("KeyboardSequence");
-	public static ArrayList<String> KeyBoardArray = new ArrayList<String>();
+	public static File ListenerSequenceFile = FilesAndClipboard.CreateFile("ListenerSequence");
+	public static ArrayList<String> ListenerArray = new ArrayList<String>();
+	public static ArrayList<String> testArray = new ArrayList<String>();
 	public static String FinalString = "";
 	public static String FinalStringChar = "";
-	public static Boolean KeyListenerOnBoolean = false;
 
 	public static synchronized void main(String[] args) throws IOException {
-		KeyListenerInit();
+		ListenerInit();
 	}
 
-	public static synchronized void KeyListenerInit() {
+	public static synchronized void ListenerInit() {
+		logerinit();
+		try {
+			GlobalScreen.registerNativeHook();
+		} catch (NativeHookException ex) {
+			System.err.println("There was a problem registering the native hook.");
+			System.err.println(ex.getMessage());
+			System.exit(1);
+		}
+		Listener UserInputListener = new Listener();
+
+		// Add the appropriate listeners.
+		GlobalScreen.addNativeMouseListener(UserInputListener);
+		GlobalScreen.addNativeMouseMotionListener(UserInputListener);
+
+		GlobalScreen.addNativeKeyListener(new Listener());
+	}
+
+	public static void logerinit() {
 		// Get the logger for "org.jnativehook" and set the level to warning.
 		Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
 		logger.setLevel(Level.WARNING);
@@ -46,36 +68,21 @@ public class KeyBoardInput implements NativeKeyListener {
 		for (int i = 0; i < handlers.length; i++) {
 			handlers[i].setLevel(Level.OFF);
 		}
-
-		try {
-			GlobalScreen.registerNativeHook();
-			KeyBoardInput.KeyListenerOnBoolean = true;
-		} catch (NativeHookException ex) {
-			System.err.println("There was a problem registering the native hook.");
-			System.err.println(ex.getMessage());
-			System.exit(1);
-		}
-		GlobalScreen.addNativeKeyListener(new KeyBoardInput());
-
 	}
-	
-	/*public static File File() {
-		return KeyboardSequenceFile;
-	}*/
 
 	public static synchronized void UpdateFile() {
-		System.out.println("The array is this long: " + KeyBoardInput.KeyBoardArray.size());
-		KeyBoardInput.KeyBoardArray.add(FinalString);
-		FilesAndClipboard.WriteToFile(KeyBoardInput.KeyBoardArray, KeyBoardInput.KeyboardSequenceFile,
-				KeyBoardInput.KeyBoardArray.size(), true);
-		FilesAndClipboard.GetFilePath(KeyBoardInput.KeyboardSequenceFile, true);
+		System.out.println("The array of events is this long: " + Listener.ListenerArray.size());
+		Listener.ListenerArray.add(FinalString);
+		System.out.println("final string is " + FinalString);
+		FilesAndClipboard.WriteToFile(Listener.ListenerArray, Listener.ListenerSequenceFile,
+				Listener.ListenerArray.size(), true);
+		FilesAndClipboard.GetFilePath(Listener.ListenerSequenceFile, true);
 		try {
-			FilesAndClipboard.OpenFile(KeyBoardInput.KeyboardSequenceFile, true);
+			FilesAndClipboard.OpenFile(Listener.ListenerSequenceFile, true);
 		} catch (AWTException e1) {
 			e1.printStackTrace();
 		}
 		System.out.println("NativeKeyListener class is ending");
-		System.out.println("7hello");
 	}
 
 	public static synchronized char keyCodeToChar(String KeyCodeString) {
@@ -118,7 +125,6 @@ public class KeyBoardInput implements NativeKeyListener {
 		} else {
 			keyCodeChar = KeyCodeString.charAt(0);
 		}
-		// return keyCodeChar;
 		return keyCodeChar;
 	}
 
@@ -127,39 +133,53 @@ public class KeyBoardInput implements NativeKeyListener {
 
 		if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
 			try {
-				KeyBoardInput.KeyListenerOnBoolean = false;
 				UpdateFile();
 				GlobalScreen.unregisterNativeHook();
 			} catch (NativeHookException e1) {
 				e1.printStackTrace();
 			}
 		} else {
-			KeyBoardInput.KeyBoardArray.add("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
-			KeyBoardInput.FinalString = KeyBoardInput.FinalString
+			Listener.ListenerArray.add("Key Pressed: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/");
+			Listener.FinalString = Listener.FinalString
 					+ String.valueOf(keyCodeToChar(NativeKeyEvent.getKeyText(e.getKeyCode())));
-			KeyBoardInput.FinalStringChar = KeyBoardInput.FinalString + NativeKeyEvent.getKeyText(e.getKeyCode());
 
 		}
 	}
 
 	public void nativeKeyReleased(NativeKeyEvent e) {
 		System.out.println("Key Released: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
-		KeyBoardInput.KeyBoardArray.add("Key Released: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+		Listener.ListenerArray.add("Key Released: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/");
 	}
 
 	public void nativeKeyTyped(NativeKeyEvent e) {
 		// System.out.println("Key Typed: " + e.getKeyText(e.getKeyCode()));
 	}
 
-	/*
-	 * public static void unregisterNativeHook() throws NativeHookException { if
-	 * (org.jnativehook.GlobalScreen.isNativeHookRegistered()) {
-	 * 
-	 * synchronized (GlobalScreen.hookThread) { try {
-	 * org.jnativehook.GlobalScreen.hookThread.disable(); hookThread.join(); } catch
-	 * (Exception e) { throw new NativeHookException(e.getCause()); } }
-	 * 
-	 * // GlobalScreen.eventExecutor.shutdown(); } }
-	 */
+	@Override
+	public void nativeMouseMoved(NativeMouseEvent e) {
+		// System.out.println("Mouse Clicked: " + e.getClickCount());
 
+	}
+
+	@Override
+	public void nativeMouseDragged(NativeMouseEvent e) {
+		// System.out.println("Mouse dragged with " + e.getButton() + " to "+ e.getX() +
+		// ", " + e.getY());
+	}
+
+	@Override
+	public void nativeMouseClicked(NativeMouseEvent e) {
+		// System.out.println("Mouse Released: " + e.getButton());
+	}
+
+	@Override
+	public void nativeMousePressed(NativeMouseEvent e) {
+		System.out.println("Mouse Clicked: " + e.getX() + ", " + e.getY());
+		Listener.ListenerArray.add("Mouse Clicked: " + "(" + e.getX() + "," + e.getY() + ")");
+	}
+
+	@Override
+	public void nativeMouseReleased(NativeMouseEvent e) {
+		// System.out.println("Mouse Dragged: " + e.getX() + ", " + e.getY());
+	}
 }

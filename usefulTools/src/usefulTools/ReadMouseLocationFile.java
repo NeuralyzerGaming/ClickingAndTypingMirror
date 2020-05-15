@@ -12,7 +12,7 @@ public class ReadMouseLocationFile {
 
 	public static void main(String[] args) throws FileNotFoundException, AWTException {
 		init();
-		ArrayList<Integer> MouseLocationsArray = FilesAndClipboard.ReadFileToArray(ReadMouseLocationFile.ClassFile, GettingMouseLocationFile.NumbOfClicks,1);
+		ArrayList<Integer> MouseLocationsArray = FilesAndClipboard.ReadFileToArray(ReadMouseLocationFile.ClassFile,1);
 		System.out.println(MouseLocationsArray);
 		MouseClick.clickFromArray(MouseLocationsArray);
 		cleanup();

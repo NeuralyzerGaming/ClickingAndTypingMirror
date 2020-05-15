@@ -92,13 +92,13 @@ public class FilesAndClipboard {
 		System.out.println("WriteToFile method ended");
 	}
 
-	public static void WriteToFile(ArrayList<String> mouseSequenceArray, File File, int Limit, Boolean dumb) {
+	public static void WriteToFile(ArrayList<String> StringArray, File File, int ArraySize, Boolean dumb) {
 		try {
 			PrintStream fileStream = new PrintStream(File);
-			for (int i = 0; i < Limit; i++) {
-				fileStream.println(mouseSequenceArray.get(i));
+			for (int i = 0; i < ArraySize; i++) {
+				fileStream.println(StringArray.get(i));
 			}
-			System.out.println("WriteToFile method wrote " + "\"" + mouseSequenceArray + "\" to the file " + "\""
+			System.out.println("WriteToFile method wrote " + "\"" + StringArray + "\" to the file " + "\""
 					+ File.getName() + "\"");
 			fileStream.close();
 		} catch (IOException e) {
@@ -381,7 +381,7 @@ public class FilesAndClipboard {
 		return FileContentArray;
 	}
 
-	public static ArrayList<Integer> ReadFileToArray(File File, int limit) throws FileNotFoundException {
+	public static ArrayList<Integer> ReadFileToArray(File File) throws FileNotFoundException {
 		ArrayList<Integer> ArrayOfLines = new ArrayList<Integer>();
 		Scanner sc = new Scanner(File);
 		while (sc.hasNextLine()) {
@@ -397,7 +397,23 @@ public class FilesAndClipboard {
 		return ArrayOfLines;
 	}
 
-	public static ArrayList<Integer> ReadFileToArray(File File, int limit, int skip) throws FileNotFoundException {
+	public static ArrayList<String> ReadFileToArray(File File, Boolean dumb) throws FileNotFoundException {
+		ArrayList<String> ArrayOfLines = new ArrayList<String>();
+		Scanner sc = new Scanner(File);
+		while (sc.hasNextLine()) {
+			// System.out.println(Integer.parseInt(sc.next()));
+			try {
+				ArrayOfLines.add(sc.nextLine());
+			} catch (Exception e) {
+				System.out.println("ReadFileToArray Method caught an error and I dont know how to run this without");
+			}
+		}
+		// System.out.println(ArrayOfLines);
+		sc.close();
+		return ArrayOfLines;
+	}
+	
+	public static ArrayList<Integer> ReadFileToArray(File File, int skip) throws FileNotFoundException {
 		ArrayList<Integer> ArrayOfLines = new ArrayList<Integer>();
 		Scanner sc = new Scanner(File);
 		int counter = 0;
@@ -419,7 +435,30 @@ public class FilesAndClipboard {
 		sc.close();
 		return ArrayOfLines;
 	}
-
+	
+	public static ArrayList<String> ReadFileToArray(File File, int skip, Boolean dumb) throws FileNotFoundException {
+		ArrayList<String> ArrayOfLines = new ArrayList<String>();
+		Scanner sc = new Scanner(File);
+		int counter = 0;
+		while (sc.hasNextLine()) {
+			// System.out.println(Integer.parseInt(sc.next()));
+			try {
+				if (skip != 0) {
+					System.out.println("skipped line: " + counter + "with text:" + Integer.parseInt(sc.next()));
+					counter++;
+					skip--;
+				} else {
+					ArrayOfLines.add(sc.next());
+				}
+			} catch (Exception e) {
+				System.out.println("ReadFileToArray Method caught an error and I dont know how to run this without");
+			}
+		}
+		// System.out.println(ArrayOfLines);
+		sc.close();
+		return ArrayOfLines;
+	}
+	
 	public static int ReadFileLineOneToInt(File File) {
 		int fileFirstLine = 0;
 		try {
