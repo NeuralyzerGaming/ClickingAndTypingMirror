@@ -8,6 +8,7 @@ import java.awt.AWTException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,6 +100,7 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 			keyCodeChar = '\b';
 		} else if (KeyCodeString == "Tab") {
 			keyCodeChar = '\t';
+			System.out.println("TAB HAS BEEN PRESSED!!!!");
 		} else if (KeyCodeString == "Open Bracket") {
 			keyCodeChar = '[';
 		} else if (KeyCodeString == "Close Bracket") {
@@ -139,7 +141,8 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 				e1.printStackTrace();
 			}
 		} else {
-			Listener.ListenerArray.add("Key Pressed: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/");
+			Listener.ListenerArray.add("Key Pressed: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/"
+					+ " KeyCode is - " + e.getKeyCode() + " -");
 			Listener.FinalString = Listener.FinalString
 					+ String.valueOf(keyCodeToChar(NativeKeyEvent.getKeyText(e.getKeyCode())));
 
@@ -147,8 +150,10 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 	}
 
 	public void nativeKeyReleased(NativeKeyEvent e) {
-		System.out.println("Key Released: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
-		Listener.ListenerArray.add("Key Released: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/");
+		System.out.println("Key Released: " + NativeKeyEvent.getKeyText(e.getKeyCode()) + " KeyCode is - "
+				+ e.getKeyCode() + " -");
+		Listener.ListenerArray.add("Key Released: " + "/" + NativeKeyEvent.getKeyText(e.getKeyCode()) + "/"
+				+ " KeyCode is - " + e.getKeyCode() + " -");
 	}
 
 	public void nativeKeyTyped(NativeKeyEvent e) {
@@ -157,7 +162,7 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent e) {
-		// System.out.println("Mouse Clicked: " + e.getClickCount());
+		// System.out.println("Mouse moves: " + e.getClickCount());
 
 	}
 
@@ -174,8 +179,12 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 
 	@Override
 	public void nativeMousePressed(NativeMouseEvent e) {
-		System.out.println("Mouse Clicked: " + e.getX() + ", " + e.getY());
-		Listener.ListenerArray.add("Mouse Clicked: " + "(" + e.getX() + "," + e.getY() + ")");
+		// System.out.println("Mouse Clicked: " + e.getX() + ", " + e.getY());
+		// built into package but wrong... doubles the true value...
+		int x = MouseClick.getMouseLocation()[0];
+		int y = MouseClick.getMouseLocation()[1];
+		System.out.println("Mouse Clicked at " + "(" + x + "," + y + ")");
+		Listener.ListenerArray.add("Mouse Clicked: " + "(" + x + "," + y + ")");
 	}
 
 	@Override
