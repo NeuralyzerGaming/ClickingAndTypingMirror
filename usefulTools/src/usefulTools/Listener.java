@@ -100,7 +100,6 @@ public class Listener implements NativeKeyListener, NativeMouseListener, NativeM
 			keyCodeChar = '\b';
 		} else if (KeyCodeString == "Tab") {
 			keyCodeChar = '\t';
-			System.out.println("TAB HAS BEEN PRESSED!!!!");
 		} else if (KeyCodeString == "Open Bracket") {
 			keyCodeChar = '[';
 		} else if (KeyCodeString == "Close Bracket") {

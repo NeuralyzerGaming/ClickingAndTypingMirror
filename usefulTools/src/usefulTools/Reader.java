@@ -25,16 +25,16 @@ public class Reader {
 	/**
 	 * @param args
 	 */
-	public static void main(File file) throws FileNotFoundException, AWTException {
+	public static void main(File file, int mouseDelay, int keyDelay) throws FileNotFoundException, AWTException {
 		init(file);
 		ArrayList<String> ListenerArray = FilesAndClipboard.ReadFileToArray(file, true);
 		System.out.println(ListenerArray);
-		parseArrayList(ListenerArray);
+		parseArrayList(ListenerArray, mouseDelay, keyDelay);
 		// cleanup(file);
 		// ^^ deletes file at the end
 	}
 
-	public static void parseArrayList(ArrayList<String> StringArrayList) throws AWTException {
+	public static void parseArrayList(ArrayList<String> StringArrayList, int mouseDelay, int keyDelay) throws AWTException {
 		Robot r = new Robot();
 		r.delay(1500);
 		for (int i = 0; i < StringArrayList.size(); i++) {
@@ -45,20 +45,20 @@ public class Reader {
 				int[] MouseCord = clickCord(line);
 				System.out.println("The code is going to click this x cord " + MouseCord[0]);
 				System.out.println("The code is going to click this x cord " + MouseCord[1]);
-				MouseClick.click(MouseCord[0], MouseCord[1], true, true, 100);
+				MouseClick.click(MouseCord[0], MouseCord[1], true, true, mouseDelay);
 			} else if (line.indexOf("Key Pressed:") != -1) {
 				System.out.println("Key Pressed on line " + i);
-				if (StringToButtonPress(parseLineForKey(line), 10) == false) {
+				if (StringToButtonPress(parseLineForKey(line), keyDelay) == false) {
 					line = parseLineForKey(line);
 					System.out.println("Specific key pressed is " + line);
-					keyPress(Listener.keyCodeToChar(line), 10);
+					keyPress(Listener.keyCodeToChar(line), keyDelay);
 				}
 			} else if (line.indexOf("Key Released:") != -1) {
 				System.out.println("Key Released on line " + i);
-				if (StringToButtonRelease(parseLineForKey(line), 10) == false) {
+				if (StringToButtonRelease(parseLineForKey(line), keyDelay) == false) {
 					line = parseLineForKey(line);
 					System.out.println("Specific key released is " + line);
-					keyRelease(Listener.keyCodeToChar(line), 10);
+					keyRelease(Listener.keyCodeToChar(line), keyDelay);
 				}
 			} else {
 				System.out.println("unidentified line: " + i);
